@@ -1,0 +1,6 @@
+product_id,name,mrp,cost_price,min_margin_pct,stock
+P001,Wireless Earbuds,2999,1600,12,25
+P002,Bluetooth Speaker,3999,2300,10,14
+P003,Smart Watch,4999,2700,15,9
+P004,Power Bank 10000mAh,1999,900,10,30
+P005,Wireless Headphones,5999,3200,12,11

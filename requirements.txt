@@ -1,0 +1,9 @@
+mysql-connector-python
+deep-translator
+numpy
+sentence-transformers
+langgraph>=0.1.0
+streamlit
+openai  # Optional: for enhanced LLM responses
+google-generativeai  # Optional: for Google Gemini
+anthropic  # Optional: for Claude
