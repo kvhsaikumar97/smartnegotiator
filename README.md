@@ -13,7 +13,7 @@ An intelligent e-commerce chatbot that uses advanced AI to help customers negoti
 - **AI-Powered Negotiation**: Intelligent price negotiation using Google Gemini, OpenAI GPT, or Anthropic Claude.
 - **Dynamic Negotiation Rules**: Admin-configurable thresholds for stock levels and discount rates (manage strategy in real-time).
 - **Resilient Architecture**: Automatic fallback to rule-based logic if AI services are unavailable (Quota/Key errors).
-- **Semantic Product Search**: Find products using natural language queries with sentence embeddings.
+- **Semantic Product Search**: Find products using natural language queries with sentence embeddings stored in **ChromaDB**.
 - **Real-time Chat Interface**: Modern, professional UI with persistent chat history.
 - **User Authentication**: Secure user registration and login with PBKDF2 password hashing.
 - **Shopping Cart**: Full e-commerce cart functionality with real-time stock validation.
@@ -47,6 +47,7 @@ The application follows a **Service-Oriented Architecture (SOA)**:
 │   ├── conversation_service.py # Chat and negotiation logic
 │   └── rag_engine.py  # AI-powered search and responses (with Fallback)
 ├── data/             # Product data and policies
+├── vectordb/         # ChromaDB vector storage
 ├── streamlit_app.py  # Main Streamlit application (UI Layer)
 ├── docker-compose.yml # Container orchestration
 └── requirements.txt  # Python dependencies
