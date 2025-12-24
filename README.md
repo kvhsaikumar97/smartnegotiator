@@ -1,53 +1,317 @@
-# Smart Negotiator 🤖
+# 🤖 Smart Negotiator - AI-Powered Shopping Assistant
 
-An AI-powered negotiation chatbot for e-commerce, built with Streamlit, LangGraph, and multiple LLM providers including Google Gemini.
+An intelligent e-commerce chatbot that uses advanced AI to help customers negotiate prices and discover products through natural conversation.
+
+![Smart Negotiator](https://img.shields.io/badge/AI-Powered-🤖-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Python](https://img.shields.io/badge/Python-3.11+-orange)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red)
 
 ## ✨ Features
 
-- **User Authentication**: Register and login to manage your account
-- **Product Management**: View available products with prices and descriptions
-- **AI Chatbot (Kiki Bot)**: Interactive negotiation assistant with LLM integration
-- **Multi-Language Support**: Handles Telugu and English queries
-- **RAG Engine**: Uses LangGraph and Sentence Transformers for intelligent recommendations
-- **LLM Enhancement**: Google Gemini, OpenAI, or Anthropic for smart responses
-- **Shopping Cart**: Add products to cart and place orders
-- **Order History**: View past orders
-- **Intelligent Negotiation**: AI-powered pricing strategies and discounts
+### 🚀 **Core Features**
+- **AI-Powered Negotiation**: Intelligent price negotiation using Google Gemini, OpenAI GPT, or Anthropic Claude
+- **Semantic Product Search**: Find products using natural language queries with sentence embeddings
+- **Real-time Chat Interface**: Modern Streamlit UI with persistent chat history
+- **User Authentication**: Secure user registration and login with PBKDF2 password hashing
+- **Shopping Cart**: Full e-commerce cart functionality
+- **Order Management**: Complete order tracking system
+
+### 🔒 **Security & Performance**
+- **Enhanced Security**: PBKDF2 password hashing with salt, input validation, SQL injection prevention
+- **Connection Pooling**: Efficient database connection management
+- **Lazy Loading**: AI models load only when needed
+- **Error Handling**: Comprehensive error handling with user-friendly messages
+- **Logging**: Structured logging for debugging and monitoring
+
+### 🛠 **Technical Architecture**
+- **Service-Oriented Architecture**: Clean separation of concerns with dedicated service classes
+- **Database Optimization**: Indexed queries, connection pooling, and efficient data retrieval
+- **Modular Design**: Easy to extend and maintain
+- **Docker Support**: Containerized deployment for easy sharing
+
+## 🏗️ Architecture Overview
+
+```
+├── frontend/          # React-based frontend (optional)
+├── backend/           # Python backend services
+│   ├── config.py      # Configuration and database management
+│   ├── user_service.py    # User authentication & management
+│   ├── product_service.py # Product and cart operations
+│   ├── conversation_service.py # Chat and negotiation logic
+│   └── rag_engine.py  # AI-powered search and responses
+├── data/             # Product data and policies
+├── streamlit_app.py  # Main Streamlit application
+├── docker-compose.yml # Container orchestration
+└── requirements.txt  # Python dependencies
+```
 
 ## 🚀 Quick Start
 
+### Prerequisites
+- Docker and Docker Compose
+- Git
+- Python 3.11+ (if running locally)
+
+### 1. Clone and Setup
 ```bash
-# Start with Docker (recommended)
+git clone <repository-url>
+cd smartnegotiator
+```
+
+### 2. Environment Configuration
+```bash
+# Copy and edit environment file
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+### 3. Launch with Docker (Recommended)
+```bash
+# Build and run
 docker-compose up --build
 
-# Or use the quick start script
+# Or run in background
+docker-compose up -d --build
+```
+
+### 4. Access the Application
+- **Main App**: http://localhost:8501
+- **Database**: localhost:3306 (MySQL)
+
+### 5. Initial Setup
+1. Load products: Click "📥 Load Products" in the sidebar
+2. Rebuild embeddings: Click "🔄 Rebuild Embeddings" for AI search
+3. Register/Login and start chatting!
+
+## 🔧 Configuration
+
+### Environment Variables (.env)
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=password
+DB_NAME=smartnegotiator
+
+# AI API Keys (at least one required)
+OPENAI_API_KEY=sk-your-openai-key
+GEMINI_API_KEY=your-gemini-key
+ANTHROPIC_API_KEY=your-anthropic-key
+
+# App Settings
+MAX_LOGIN_ATTEMPTS=5
+SESSION_TIMEOUT=3600
+ITEMS_PER_PAGE=10
+```
+
+### API Keys Setup
+1. **Google Gemini**: Get from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. **OpenAI**: Get from [OpenAI Platform](https://platform.openai.com/api-keys)
+3. **Anthropic**: Get from [Anthropic Console](https://console.anthropic.com/)
+
+## 📊 Database Schema
+
+### Core Tables
+- **users**: User accounts with secure password storage
+- **products**: Product catalog with embeddings for AI search
+- **cart**: Shopping cart items
+- **orders**: Order history and tracking
+- **conversations**: Chat message history
+- **order_items**: Detailed order line items
+
+### Indexes & Performance
+- Full-text search on product descriptions
+- Optimized indexes on frequently queried columns
+- Foreign key constraints for data integrity
+
+## 🤖 AI Features
+
+### Negotiation Intelligence
+The chatbot provides context-aware negotiation responses based on:
+- **Stock Levels**: Higher discounts for lower stock items
+- **Product Context**: Relevant product information in responses
+- **User History**: Personalized recommendations
+
+### Supported LLMs
+1. **Google Gemini 2.0 Flash** (Recommended - Fast & Cost-effective)
+2. **OpenAI GPT-3.5 Turbo** (Balanced performance)
+3. **Anthropic Claude Haiku** (High-quality responses)
+
+## 🔍 Key Improvements Made
+
+### Security Enhancements
+- ✅ **PBKDF2 Password Hashing**: Replaced SHA256 with salted PBKDF2
+- ✅ **Input Validation**: Email, phone, and general input sanitization
+- ✅ **SQL Injection Prevention**: Parameterized queries throughout
+- ✅ **Connection Pooling**: Efficient database connection management
+
+### Performance Optimizations
+- ✅ **Lazy Model Loading**: AI models load only when needed
+- ✅ **Database Indexing**: Optimized queries with proper indexes
+- ✅ **Connection Pooling**: Reduced connection overhead
+- ✅ **Caching Strategy**: Smart caching for embeddings and results
+
+### Code Quality Improvements
+- ✅ **Service Architecture**: Clean separation of business logic
+- ✅ **Error Handling**: Comprehensive exception handling
+- ✅ **Logging**: Structured logging throughout the application
+- ✅ **Type Hints**: Added type annotations for better code clarity
+- ✅ **Modular Design**: Easy to extend and maintain
+
+### User Experience Enhancements
+- ✅ **Modern UI**: Improved Streamlit interface with better navigation
+- ✅ **Loading States**: Visual feedback for long operations
+- ✅ **Error Messages**: User-friendly error handling
+- ✅ **Responsive Design**: Better mobile and desktop experience
+
+## 🧪 Testing
+
+### Automated Tests
+```bash
+# Install test dependencies
+pip install pytest pytest-cov
+
+# Run tests
+pytest
+
+# Run with coverage
+pytest --cov=backend --cov-report=html
+```
+
+### Manual Testing Checklist
+- [ ] User registration and login
+- [ ] Product loading from CSV
+- [ ] Embedding rebuild process
+- [ ] AI chat responses
+- [ ] Cart functionality
+- [ ] Order placement
+- [ ] Negotiation logic
+
+## 🚀 Deployment
+
+### Production Deployment
+```bash
+# Build for production
+docker-compose -f docker-compose.prod.yml up --build
+
+# Or use the deployment scripts
 ./run.sh  # Linux/Mac
 run.bat   # Windows
-
-# Access at http://localhost:8501
 ```
 
-## 🛠️ Tech Stack
+### Environment-Specific Configs
+- **Development**: `docker-compose.yml`
+- **Production**: `docker-compose.prod.yml`
+- **Testing**: `docker-compose.test.yml`
 
-- **Frontend**: Streamlit
-- **Backend Logic**: Python with LangGraph
-- **Database**: MySQL
-- **AI/ML**:
-  - Sentence Transformers (embeddings)
-  - LangGraph (workflow orchestration)
-  - Google Gemini (currently active)
-  - OpenAI GPT (alternative)
-  - Anthropic Claude (alternative)
-- **Deployment**: Docker + Docker Compose
+## 📈 Monitoring & Analytics
 
-## 📁 Project Structure
+### Built-in Analytics
+- User session tracking
+- Product view analytics
+- Conversation analytics
+- Order tracking and reporting
 
+### Logs
+```bash
+# View application logs
+docker-compose logs app
+
+# View database logs
+docker-compose logs db
+
+# Follow logs in real-time
+docker-compose logs -f app
 ```
-smartnegotiator/
-├── streamlit_app.py          # Main Streamlit application
-├── backend/
-│   ├── rag_engine.py         # LangGraph RAG pipeline with LLM integration
-│   └── .env                  # Environment variables (moved to root)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes with tests
+4. Run tests: `pytest`
+5. Commit: `git commit -m "Add feature"`
+6. Push: `git push origin feature-name`
+7. Create a Pull Request
+
+### Code Standards
+- **Black**: Code formatting
+- **Flake8**: Linting
+- **MyPy**: Type checking
+- **Pre-commit hooks**: Automated quality checks
+
+## 📝 API Documentation
+
+### Service Classes
+- **UserService**: User management operations
+- **ProductService**: Product and cart operations
+- **ConversationService**: Chat and negotiation logic
+- **RAGEngine**: AI-powered search and responses
+
+### Key Methods
+```python
+# User operations
+UserService.authenticate_user(email, password)
+UserService.register_user(user_data)
+
+# Product operations
+ProductService.get_all_products()
+ProductService.add_to_cart(user_email, product_id)
+
+# AI operations
+rag_answer(query, k=3)
+rag_answer_with_llm(query, use_llm=True)
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Database Connection Failed**
+```bash
+# Check if database is running
+docker-compose ps
+
+# Restart database
+docker-compose restart db
+```
+
+**AI Model Loading Issues**
+```bash
+# Clear cache and rebuild
+docker-compose down
+docker system prune -a
+docker-compose up --build
+```
+
+**Port Already in Use**
+```bash
+# Change ports in docker-compose.yml
+ports:
+  - "8502:8501"  # Change host port
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Streamlit**: For the amazing web app framework
+- **Sentence Transformers**: For semantic search capabilities
+- **LangGraph**: For workflow orchestration
+- **Google, OpenAI, Anthropic**: For powerful LLM APIs
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/your-repo/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/your-repo/discussions)
+- **Documentation**: [Wiki](https://github.com/your-repo/wiki)
+
+---
+
+**Built with ❤️ using AI and modern web technologies**
 ├── data/
 │   ├── products.csv          # Product data
 │   ├── competitors.csv       # Competitor data
