@@ -10,38 +10,44 @@ An intelligent e-commerce chatbot that uses advanced AI to help customers negoti
 ## ✨ Features
 
 ### 🚀 **Core Features**
-- **AI-Powered Negotiation**: Intelligent price negotiation using Google Gemini, OpenAI GPT, or Anthropic Claude
-- **Semantic Product Search**: Find products using natural language queries with sentence embeddings
-- **Real-time Chat Interface**: Modern Streamlit UI with persistent chat history
-- **User Authentication**: Secure user registration and login with PBKDF2 password hashing
-- **Shopping Cart**: Full e-commerce cart functionality
-- **Order Management**: Complete order tracking system
+- **AI-Powered Negotiation**: Intelligent price negotiation using Google Gemini, OpenAI GPT, or Anthropic Claude.
+- **Dynamic Negotiation Rules**: Admin-configurable thresholds for stock levels and discount rates (manage strategy in real-time).
+- **Resilient Architecture**: Automatic fallback to rule-based logic if AI services are unavailable (Quota/Key errors).
+- **Semantic Product Search**: Find products using natural language queries with sentence embeddings.
+- **Real-time Chat Interface**: Modern, professional UI with persistent chat history.
+- **User Authentication**: Secure user registration and login with PBKDF2 password hashing.
+- **Shopping Cart**: Full e-commerce cart functionality with real-time stock validation.
+- **Order Management**: Complete order tracking system.
+
+### 🎨 **Modern UI/UX**
+- **Professional Design**: Clean, e-commerce standard interface (no clutter).
+- **Featured Drops**: Highlighted product banners to drive sales.
+- **Interactive Elements**: Popover details, toast notifications, and smooth transitions.
+- **Admin Dashboard**: Sidebar tools to rebuild embeddings, load data, and configure business rules.
 
 ### 🔒 **Security & Performance**
-- **Enhanced Security**: PBKDF2 password hashing with salt, input validation, SQL injection prevention
-- **Connection Pooling**: Efficient database connection management
-- **Lazy Loading**: AI models load only when needed
-- **Error Handling**: Comprehensive error handling with user-friendly messages
-- **Logging**: Structured logging for debugging and monitoring
+- **Enhanced Security**: PBKDF2 password hashing with salt, input validation, SQL injection prevention.
+- **Connection Pooling**: Efficient database connection management.
+- **Lazy Loading**: AI models load only when needed.
+- **Error Handling**: Comprehensive error handling with user-friendly messages.
 
-### 🛠 **Technical Architecture**
-- **Service-Oriented Architecture**: Clean separation of concerns with dedicated service classes
-- **Database Optimization**: Indexed queries, connection pooling, and efficient data retrieval
-- **Modular Design**: Easy to extend and maintain
-- **Docker Support**: Containerized deployment for easy sharing
+## 🏗️ Architecture & Process Flow
 
-## 🏗️ Architecture Overview
+For a detailed breakdown of the system architecture, component interactions, and step-by-step process flows, please refer to [ARCHITECTURE_AND_FLOW.md](ARCHITECTURE_AND_FLOW.md).
+
+### **High-Level Overview**
+The application follows a **Service-Oriented Architecture (SOA)**:
 
 ```
-├── frontend/          # React-based frontend (optional)
+├── frontend/          # React-based frontend (optional/legacy)
 ├── backend/           # Python backend services
 │   ├── config.py      # Configuration and database management
 │   ├── user_service.py    # User authentication & management
 │   ├── product_service.py # Product and cart operations
 │   ├── conversation_service.py # Chat and negotiation logic
-│   └── rag_engine.py  # AI-powered search and responses
+│   └── rag_engine.py  # AI-powered search and responses (with Fallback)
 ├── data/             # Product data and policies
-├── streamlit_app.py  # Main Streamlit application
+├── streamlit_app.py  # Main Streamlit application (UI Layer)
 ├── docker-compose.yml # Container orchestration
 └── requirements.txt  # Python dependencies
 ```

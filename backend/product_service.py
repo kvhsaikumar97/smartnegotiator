@@ -12,7 +12,7 @@ class ProductService:
             if include_embeddings:
                 query = "SELECT * FROM products"
             else:
-                query = "SELECT id, name, description, price, image, stock FROM products"
+                query = "SELECT id, name, description, price, min_price, image, stock FROM products"
 
             return db_manager.execute_query(query, fetch=True) or []
         except Exception as e:
@@ -50,6 +50,11 @@ class ProductService:
                 st.error("Product not found")
                 return False
 
+            # Check quantity
+            if quantity <= 0:
+                st.error("Quantity must be greater than 0")
+                return False
+
             # Check stock
             if product['stock'] < quantity:
                 st.error(f"Insufficient stock. Available: {product['stock']}")
@@ -83,9 +88,16 @@ class ProductService:
 
     @staticmethod
     def get_cart_items(user_email: str) -> List[Dict[str, Any]]:
-        """Get user's cart items"""
+        """Get user's cart items with product details"""
         try:
-            query = "SELECT * FROM cart WHERE user_email = %s ORDER BY created_at DESC"
+            query = """
+                SELECT c.id, c.user_email, c.product_id, c.quantity, c.price, 
+                       p.name, p.description, p.image
+                FROM cart c
+                JOIN products p ON c.product_id = p.id
+                WHERE c.user_email = %s 
+                ORDER BY c.created_at DESC
+            """
             return db_manager.execute_query(query, (user_email,), fetch=True) or []
         except Exception as e:
             st.error(f"Failed to load cart: {str(e)}")

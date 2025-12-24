@@ -1,0 +1,20 @@
+👋 I'm Kiki, your AI shopping assistant! Here's what I can do:
+
+Find Products: Ask me about "headphones", "laptops", or "best deals".
+Check Stock: Ask "what is low on stock?"
+Negotiate: I can negotiate prices! Try making an offer on a product.
+Manage Cart: Ask to "show my cart" or "add this to cart".
+Product Details: Ask specific questions about any item.
+How can I help you today?
+
+headphones
+
+Wireless Headphones price ₹5999.0 — High-quality wireless headphones with excellent features. MRP: ₹5999, Current Price: ₹5999.0
+
+can i get for 5500
+
+Regarding Wireless Headphones: Deal! 🤝 I can accept your offer of ₹5500.0. You've got a great price!
+
+add it to the cart
+
+✅ I've added Wireless Headphones to your cart! You can proceed to checkout in the Cart tab.

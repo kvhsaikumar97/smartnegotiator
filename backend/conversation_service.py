@@ -9,6 +9,9 @@ class ConversationService:
     def save_message(user_email: str, product_id: Optional[int], role: str, message: str) -> bool:
         """Save a chat message to database"""
         try:
+            if not message or not message.strip():
+                return False
+
             query = """
                 INSERT INTO conversations (user_email, product_id, role, message)
                 VALUES (%s, %s, %s, %s)
@@ -84,33 +87,50 @@ class NegotiationService:
     """Service for handling negotiation logic"""
 
     @staticmethod
-    def calculate_offer(product_price: float, stock_level: int) -> Dict[str, Any]:
-        """Calculate negotiation offer based on stock levels"""
+    def calculate_offer(product_price: float, stock_level: int, min_price: float = None,
+                       high_stock_threshold: int = 15, low_stock_threshold: int = 5,
+                       high_discount_rate: float = 0.15, medium_discount_rate: float = 0.10, low_discount_rate: float = 0.05,
+                       default_min_price_pct: float = 0.85) -> Dict[str, Any]:
+        """Calculate negotiation offer based on stock levels and minimum price threshold"""
         price = float(product_price)
         stock = int(stock_level)
+        
+        # Default min_price to 85% of MRP if not set
+        floor_price = float(min_price) if min_price is not None else price * default_min_price_pct
 
-        if stock > 15:
-            # High stock - 10% discount
-            offer_price = round(price * 0.9, 2)
-            discount_percent = 10
-            message = f"Great stock available! I can offer ₹{offer_price} (10% off the MRP of ₹{price})"
-        elif 5 < stock <= 15:
-            # Medium stock - 5% discount
-            offer_price = round(price * 0.95, 2)
-            discount_percent = 5
-            message = f"Limited stock available. I can offer ₹{offer_price} (5% off the MRP of ₹{price})"
+        # Determine max discount based on stock
+        if stock > high_stock_threshold:
+            # High stock - aggressive discount allowed
+            target_discount = high_discount_rate
+            stock_msg = "Great stock available!"
+        elif low_stock_threshold < stock <= high_stock_threshold:
+            # Medium stock - moderate discount
+            target_discount = medium_discount_rate
+            stock_msg = "Limited stock available."
         else:
-            # Low stock - no discount
-            offer_price = price
-            discount_percent = 0
-            message = f"Very limited stock. Best price: ₹{price} (MRP)"
+            # Low stock - minimal discount
+            target_discount = low_discount_rate
+            stock_msg = "Very limited stock."
+
+        # Calculate potential offer price
+        potential_offer = price * (1 - target_discount)
+        
+        # Ensure we don't go below the floor price (cost + margin)
+        final_offer = max(potential_offer, floor_price)
+        
+        # Recalculate actual discount percent
+        actual_discount_percent = round(((price - final_offer) / price) * 100, 1)
+        final_offer = round(final_offer, 2)
+
+        message = f"{stock_msg} I can offer ₹{final_offer} ({actual_discount_percent}% off the MRP of ₹{price})"
 
         return {
             'original_price': price,
-            'offer_price': offer_price,
-            'discount_percent': discount_percent,
+            'offer_price': final_offer,
+            'discount_percent': actual_discount_percent,
             'message': message,
-            'can_negotiate': discount_percent > 0
+            'can_negotiate': actual_discount_percent > 0,
+            'min_price': floor_price
         }
 
     @staticmethod
@@ -126,12 +146,14 @@ class NegotiationService:
     @staticmethod
     def is_greeting(message: str) -> bool:
         """Check if message is a greeting"""
+        import re
         greetings = [
             'hi', 'hello', 'hey', 'good morning', 'good evening',
             'hai', 'namaste', 'vanakkam', 'good afternoon'
         ]
         message_lower = message.lower()
-        return any(greeting in message_lower for greeting in greetings)
+        # Use regex to match whole words only
+        return any(re.search(rf'\b{greeting}\b', message_lower) for greeting in greetings)
 
     @staticmethod
     def generate_greeting_response(user_email: str) -> str:

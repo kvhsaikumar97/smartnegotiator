@@ -34,11 +34,20 @@ class DatabaseManager:
             logger.info("Database connection pool initialized")
         except Exception as e:
             logger.error(f"Failed to initialize database pool: {e}")
-            raise
+            self.pool = None
 
     @contextmanager
     def get_connection(self):
         """Context manager for database connections"""
+        if self.pool is None:
+            # Try to re-initialize if it failed previously
+            self._init_pool()
+            if self.pool is None:
+                error_msg = "Database pool is not initialized. Check database connection."
+                logger.error(error_msg)
+                st.error(error_msg)
+                raise Exception(error_msg)
+
         conn = None
         try:
             conn = self.pool.get_connection()
